@@ -1,7 +1,12 @@
 package com.larionov.core;
 
-/**
- * Created by laroself on 25.06.17.
- */
-public enum Measure {
+
+public class Measure<T> {
+
+    public String name;
+    public T quantity;
+
+    public Measure(T quantity) {
+        this.quantity = quantity;
+    }
 }

@@ -14,7 +14,7 @@ import static org.mockito.Mockito.*;
 public class MeasureTest {
 
     @Test
-    public void shouldCreateListWithDif() {
+    public void shouldCreateMeasuresWithDifferentNumberClasses() {
         Measure<Integer> ones = new Measure<>(5);
         Measure<Long> longMeasure = new Measure<>(5288283942993218391L);
         Measure<Double> doubleMeasure = new Measure<>(12.7);
