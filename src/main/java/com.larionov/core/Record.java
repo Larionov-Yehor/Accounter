@@ -1,42 +1,64 @@
 package com.larionov.core;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import com.larionov.core.discount.Discount;
+
+import java.sql.Timestamp;
 
 
 public class Record {
-    private Long id;
-    private LocalDate createdOn;
-    private LocalTime createdAt;
+    private long id;
+    private Timestamp createdAt;
     private User createdBy;
 
     public Commodity commodity;
     public Measure unit;
+    public Discount discount;
 
-    private Double amount;
+    private double sum;
 
     public Record() {
-
     }
 
-    public void countAmount() {
+    public void summation() {
 
-        Class a = this.unit.quantity.getClass();
+        double discount = 0;
 
-        if(a.equals(Integer.class)) {
-            this.amount = commodity.price * (Integer) unit.quantity;
+        double amount = countAmount();
+        amount = round(amount);
+
+        if (this.discount != null) {
+            discount = round(this.discount.countDiscountValue(amount));
         }
 
-        if(a.equals(Long.class)) {
-            this.amount = commodity.price * (Long) unit.quantity;
-        }
-
-        if(a.equals(Double.class)) {
-            this.amount = commodity.price * (Double) unit.quantity;
-        }
-
+        this.sum = round(amount) - discount;
     }
 
+    public double countAmount() {
 
+        if (this.unit == null ) {
+            return 0;
+        }
+
+        double amount = 0;
+        Class quantityClass = this.unit.quantity.getClass();
+
+        if (quantityClass.equals(Integer.class)) {
+            amount = commodity.price * (Integer) unit.quantity;
+        } else if (quantityClass.equals(Long.class)) {
+            amount = commodity.price * (Long) unit.quantity;
+        } else if (quantityClass.equals(Double.class)) {
+            amount = commodity.price * (Double) unit.quantity;
+        }
+
+        return amount;
+    }
+
+    public double round(double amount) {
+        return (double) Math.round(amount * 100) / 100;
+    }
+
+    public double getSum() {
+        return sum;
+    }
 
 }

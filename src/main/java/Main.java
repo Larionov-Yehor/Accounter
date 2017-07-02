@@ -1,25 +1,34 @@
+import com.larionov.core.Commodity;
 import com.larionov.core.Measure;
 import com.larionov.core.Record;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.larionov.core.discount.FixedDiscount;
+import com.larionov.core.discount.PercentDiscount;
 
 public class Main {
     public static void main(String[] args) {
 
-        Measure<Double> b = new Measure<>(9.0);
-        Measure<Integer> i = new Measure<Integer>(5);
+        FixedDiscount discount = new FixedDiscount();
+        discount.amount = 100;
 
-        List<Measure> list = new ArrayList<>();
-        list.add(b);
-        list.add(i);
+        PercentDiscount percentDiscount = new PercentDiscount();
+        percentDiscount.percent = 10;
 
-        list.stream().forEach(measure -> System.out.println(measure.quantity));
 
         Record r = new Record();
-        r.unit = i;
-        System.out.println(r.unit.quantity);
+        r.commodity = new Commodity();
+        r.commodity.price=200;
+        r.unit = new Measure(1);
+        r.discount=discount;
+        r.summation();
+        System.out.println(r.getSum());
 
-        System.out.println(b.quantity.getClass().toString());
+        Record r2 = new Record();
+        r2.commodity = new Commodity();
+        r2.commodity.price=200;
+        r2.unit = new Measure(1);
+        r2.discount= percentDiscount;
+        r2.summation();
+        System.out.println(r2.getSum());
+
     }
 }
