@@ -3,11 +3,15 @@ package com.larionov.core;
 import com.larionov.core.discount.Discount;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 
 public class Record {
     private long id;
+
     private Timestamp createdAt;
+
     private User createdBy;
 
     public Commodity commodity;
@@ -17,6 +21,7 @@ public class Record {
     private double sum;
 
     public Record() {
+        this.createdAt = Timestamp.from(LocalDateTime.now().toInstant(ZoneOffset.UTC));
     }
 
     public void summation() {
@@ -35,7 +40,7 @@ public class Record {
 
     public double countAmount() {
 
-        if (this.unit == null ) {
+        if (isNotComplete()) {
             return 0;
         }
 
@@ -57,8 +62,19 @@ public class Record {
         return (double) Math.round(amount * 100) / 100;
     }
 
+    public boolean isNotComplete() {
+        return this.unit == null || this.commodity == null;
+    }
+
     public double getSum() {
         return sum;
     }
 
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public User getCreatedBy() {
+        return createdBy;
+    }
 }

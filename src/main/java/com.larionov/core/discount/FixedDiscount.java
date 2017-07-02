@@ -5,6 +5,6 @@ public class FixedDiscount extends Discount {
 
     @Override
     public double countDiscountValue(double amount) {
-        return amount - amount;
+        return amount - this.amount;
     }
 }
