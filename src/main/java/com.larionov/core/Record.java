@@ -1,6 +1,5 @@
 package com.larionov.core;
 
-
 import com.larionov.core.user.User;
 import com.larionov.core.utils.TimeUtils;
 

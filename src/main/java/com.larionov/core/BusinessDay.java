@@ -10,36 +10,78 @@ import java.util.List;
 public class BusinessDay {
 
     private long id;
+    private Outlet atOutlet;
 
-    private Timestamp startsAt;
-    private Timestamp finishesAt;
+    private Timestamp start;
+    private Timestamp end;
 
     private List<Record> records;
 
     private double total;
 
     public void add(Record record, User user) {
-        Timestamp now = TimeUtils.getCurrentTimestamp();
-        if (now.after(startsAt) && now.before(finishesAt)) {
-            addRecordAndIncreaseTotal(record);
+        if (operationIsPossible(user)) {
+            this.records.add(record);
         } else {
-            if (user.hasRightsToPerformAtAnyTime()) {
-                addRecordAndIncreaseTotal(record);
-            } else {
-                // ex
-            }
+            // exception
         }
     }
+    
 
-    public void edit(Record record, User user) {
-
+    public boolean recordsArePresent() {
+        return this.records.size() > 0;
     }
 
-    private void addRecordAndIncreaseTotal(Record record) {
-        this.records.add(record);
-        this.total += record.getSum();
+    public long getId() {
+        return id;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
 
+    public Timestamp getStart() {
+        return start;
+    }
+
+    public void setStart(Timestamp start) {
+        this.start = start;
+    }
+
+    public Timestamp getEnd() {
+        return end;
+    }
+
+    public void setEnd(Timestamp end) {
+        this.end = end;
+    }
+
+    public List<Record> getRecords() {
+        return records;
+    }
+
+    public void setRecords(List<Record> records) {
+        this.records = records;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
+
+    public Outlet getAtOutlet() {
+        return atOutlet;
+    }
+
+    public void setAtOutlet(Outlet atOutlet) {
+        this.atOutlet = atOutlet;
+    }
+
+    private boolean operationIsPossible(User user) {
+        return TimeUtils.isFreeToChange(this) || user.hasRightsToPerformAtAnyTime();
+    }
 
 }
