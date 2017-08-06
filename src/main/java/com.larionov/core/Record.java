@@ -1,73 +1,48 @@
 package com.larionov.core;
 
-import com.larionov.core.discount.Discount;
+
+import com.larionov.core.user.User;
+import com.larionov.core.utils.TimeUtils;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Record {
     private long id;
 
     private Timestamp createdAt;
-
     private User createdBy;
 
-    public Commodity commodity;
-    public Measure unit;
-    public Discount discount;
+    private List<Commodity> commodities = new ArrayList<>();
 
     private double sum;
 
     public Record() {
-        this.createdAt = Timestamp.from(LocalDateTime.now().toInstant(ZoneOffset.UTC));
+        this.createdAt = TimeUtils.getCurrentTimestamp();
     }
 
-    public void summation() {
-
-        double discount = 0;
-
-        double amount = countAmount();
-        amount = round(amount);
-
-        if (this.discount != null) {
-            discount = round(this.discount.countDiscountValue(amount));
-        }
-
-        this.sum = round(amount) - discount;
+    public Record(User user) {
+        this();
+        this.createdBy = user;
     }
 
-    public double countAmount() {
 
-        if (isNotComplete()) {
-            return 0;
-        }
-
-        double amount = 0;
-        Class quantityClass = this.unit.quantity.getClass();
-
-        if (quantityClass.equals(Integer.class)) {
-            amount = commodity.price * (Integer) unit.quantity;
-        } else if (quantityClass.equals(Long.class)) {
-            amount = commodity.price * (Long) unit.quantity;
-        } else if (quantityClass.equals(Double.class)) {
-            amount = commodity.price * (Double) unit.quantity;
-        }
-
-        return amount;
+    public boolean commoditiesArePresent() {
+        return commodities.size() > 0;
     }
 
-    public double round(double amount) {
-        return (double) Math.round(amount * 100) / 100;
-    }
-
-    public boolean isNotComplete() {
-        return this.unit == null || this.commodity == null;
+    public void increaseSumBy(double value) {
+        sum += value;
     }
 
     public double getSum() {
         return sum;
+    }
+
+    public void setSum(double sum) {
+        this.sum = sum;
     }
 
     public Timestamp getCreatedAt() {
@@ -77,4 +52,33 @@ public class Record {
     public User getCreatedBy() {
         return createdBy;
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public List<Commodity> getCommodities() {
+        return commodities;
+    }
+
+    public void setCommodities(List<Commodity> commodity) {
+        this.commodities = commodity;
+    }
+
+    public void addCommodity(Commodity commodity) {
+        this.commodities.add(commodity);
+    }
+
 }
