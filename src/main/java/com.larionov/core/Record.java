@@ -1,9 +1,7 @@
 package com.larionov.core;
 
-import com.larionov.core.user.User;
-import com.larionov.core.utils.TimeUtils;
+import com.larionov.core.history.event.RecordEvent;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,21 +9,12 @@ import java.util.List;
 public class Record {
     private long id;
 
-    private Timestamp createdAt;
-    private User createdBy;
-
     private List<Commodity> commodities = new ArrayList<>();
+    private List<RecordEvent> history;
 
     private double sum;
 
-    public Record() {
-        this.createdAt = TimeUtils.getCurrentTimestamp();
-    }
-
-    public Record(User user) {
-        this();
-        this.createdBy = user;
-    }
+    public Record(){  }
 
 
     public boolean commoditiesArePresent() {
@@ -44,28 +33,12 @@ public class Record {
         this.sum = sum;
     }
 
-    public Timestamp getCreatedAt() {
-        return createdAt;
-    }
-
-    public User getCreatedBy() {
-        return createdBy;
-    }
-
     public long getId() {
         return id;
     }
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public void setCreatedBy(User createdBy) {
-        this.createdBy = createdBy;
     }
 
     public List<Commodity> getCommodities() {

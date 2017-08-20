@@ -1,6 +1,7 @@
 package com.larionov.core;
 
 
+import com.larionov.core.history.event.BusinessDayEvent;
 import com.larionov.core.user.User;
 import com.larionov.core.utils.TimeUtils;
 
@@ -10,12 +11,12 @@ import java.util.List;
 public class BusinessDay {
 
     private long id;
-    private Outlet atOutlet;
 
     private Timestamp start;
     private Timestamp end;
 
     private List<Record> records;
+    private List<BusinessDayEvent> history;
 
     private double total;
 
@@ -26,7 +27,7 @@ public class BusinessDay {
             // exception
         }
     }
-    
+
 
     public boolean recordsArePresent() {
         return this.records.size() > 0;
@@ -70,14 +71,6 @@ public class BusinessDay {
 
     public void setTotal(double total) {
         this.total = total;
-    }
-
-    public Outlet getAtOutlet() {
-        return atOutlet;
-    }
-
-    public void setAtOutlet(Outlet atOutlet) {
-        this.atOutlet = atOutlet;
     }
 
     private boolean operationIsPossible(User user) {

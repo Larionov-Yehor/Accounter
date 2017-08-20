@@ -4,7 +4,7 @@ public class PercentDiscount extends Discount {
     public int percent;
 
     @Override
-    public double countDiscountValue(double amount) {
+    public double countCommodityAmountWithDiscount(double amount) {
         return amount / 100 * percent;
     }
 }

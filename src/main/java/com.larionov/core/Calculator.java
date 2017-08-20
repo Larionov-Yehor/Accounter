@@ -4,25 +4,35 @@ import com.larionov.core.utils.CalculationUtils;
 
 public class Calculator {
 
-    public void countBusinessDayTotal(BusinessDay businessDay) {
+    public double countBusinessDayTotal(BusinessDay businessDay) {
+        double businessDayTotal = 0;
         if (businessDay.recordsArePresent()) {
-            businessDay.getRecords().forEach(record -> countRecordSum(record));
-        } else {
-            businessDay.setTotal(0);
+            for (Record record : businessDay.getRecords()) {
+                businessDayTotal = countRecordAmount(record);
+            }
         }
+        return businessDayTotal;
     }
 
-    public void countRecordSum(Record record) {
+    public double countRecordAmount(Record record) {
+        double recordAmount = 0;
         if (record.commoditiesArePresent()) {
-            record.getCommodities().forEach(commodity -> {
-                double commoditySum = commodity.getPrice() * commodity.getQuantity();
-                commoditySum = CalculationUtils.round(commoditySum);
-                double commoditySumWithDiscount = commodity.getDiscount().countDiscountValue(commoditySum);
-                record.increaseSumBy(commoditySumWithDiscount);
-            });
-        } else {
-            record.setSum(0);
+            for (Commodity commodity : record.getCommodities()) {
+                recordAmount += countCommodityAmount(commodity);
+            }
         }
+        return recordAmount;
     }
 
+    private double countCommodityAmount(Commodity commodity) {
+        double commodityAmount = CalculationUtils.round(commodity.getPrice() * commodity.getQuantity());
+        return includeDiscount(commodity, commodityAmount);
+    }
+
+    private double includeDiscount(Commodity commodity, double commodityAmount) {
+        if (commodity.discountIsPresent()) {
+            return CalculationUtils.round(commodity.getDiscount().countCommodityAmountWithDiscount(commodityAmount));
+        }
+        return 0;
+    }
 }

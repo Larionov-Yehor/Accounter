@@ -18,6 +18,9 @@ public class Commodity {
 
     }
 
+    public boolean discountIsPresent() {
+        return discount != null;
+    }
 
     public String getTitle() {
         return title;
@@ -50,4 +53,6 @@ public class Commodity {
     public void setPrice(double price) {
         this.price = price;
     }
+
 }
+

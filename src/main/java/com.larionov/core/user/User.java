@@ -3,12 +3,12 @@ package com.larionov.core.user;
 
 public class User {
     private long id;
-    private Rights rights;
+    private Role role;
     private String firstName;
     private String lastName;
 
     public boolean hasRightsToPerformAtAnyTime() {
-        return getRights().equals(Rights.OWNER);
+        return getRole().equals(Role.OWNER);
     }
 
     public long getId() {
@@ -19,12 +19,12 @@ public class User {
         this.id = id;
     }
 
-    public Rights getRights() {
-        return rights;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRights(Rights rights) {
-        this.rights = rights;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public String getFirstName() {
